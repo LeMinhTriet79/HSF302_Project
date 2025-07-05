@@ -2,6 +2,7 @@ package com.example.crm.service;
 
 import com.example.crm.entity.User;
 import com.example.crm.repository.UserRepository;
+import com.example.crm.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
@@ -18,12 +19,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                Collections.singletonList(
-                        new SimpleGrantedAuthority(user.getRole().getName())
-                )
-        );
+        return new CustomUserDetails(user);
     }
 }
