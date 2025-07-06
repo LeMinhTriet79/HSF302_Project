@@ -7,4 +7,6 @@ import java.util.Optional;
 // Repository quản lý bảng User (người dùng)
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
+
+    boolean existsByEmailAndIdNot(String email, Long id);
 }

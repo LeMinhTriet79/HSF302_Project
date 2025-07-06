@@ -15,9 +15,10 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <h5>Admin Panel</h5>
-        <a href="#" class="active">Dashboard</a>
+        <a th:href="@{/admin/dashboard}" class="active">Dashboard</a>
         <a href="#">Users</a>
         <a href="#">Settings</a>
+        <a th:href="@{/profile}">Profile</a>
         <form th:action="@{/logout}" method="post" class="logout-form">
             <button type="submit" class="logout-btn">Đăng xuất</button>
         </form>
@@ -29,7 +30,7 @@
         <!-- Header -->
         <header class="header">
             <div class="user-info">
-                <span th:text="${currentUserName + ' - ' + currentUserRole}">Tên - Vai trò</span>
+                <span th:text="${currentUserName + ' - ' + currentUserRole}">Tên - Vai trò - UserId</span>
             </div>
         </header>
 

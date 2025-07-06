@@ -4,7 +4,10 @@ import com.example.crm.entity.Role;
 import com.example.crm.entity.User;
 import com.example.crm.repository.RoleRepository;
 import com.example.crm.repository.UserRepository;
+import com.example.crm.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,13 +35,20 @@ public class UserService {
     }
 
     // Sửa thông tin user (Admin, user tự cập nhật tài khoản)
-    public User updateUser(Long id, User userDetails) {
-        User user = userRepository.findById(id).orElseThrow();
-        user.setName(userDetails.getName());
-        user.setEmail(userDetails.getEmail());
-        user.setAddress(userDetails.getAddress());
-        user.setPhone(userDetails.getPhone());
-        return userRepository.save(user);
+    public User updateUser(Long id, User formUser) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy người dùng với ID: " + id));
+
+        if (userRepository.existsByEmailAndIdNot(formUser.getEmail(), id)) {
+            throw new IllegalArgumentException("Email đã được sử dụng bởi người dùng khác.");
+        }
+
+        existingUser.setName(formUser.getName());
+        existingUser.setAddress(formUser.getAddress());
+        existingUser.setPhone(formUser.getPhone());
+        existingUser.setEmail(formUser.getEmail());
+        existingUser.setPassword(formUser.getPassword());
+        return userRepository.save(existingUser);
     }
 
     // Xoá user (Admin)
