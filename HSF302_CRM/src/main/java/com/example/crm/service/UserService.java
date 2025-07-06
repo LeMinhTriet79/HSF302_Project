@@ -5,6 +5,7 @@ import com.example.crm.entity.User;
 import com.example.crm.repository.RoleRepository;
 import com.example.crm.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,9 +18,13 @@ public class UserService {
     private RoleRepository roleRepository;
 
     // Lấy tất cả user (Admin xem tất cả, Leader có thể xem nhân viên)
+//    public List<User> getAllUsers() {
+//        return userRepository.findAll();
+//    }
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findByActiveTrue();
     }
+
 
     // Lấy user theo id
     public User getUserById(Long id) {
@@ -41,10 +46,17 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    // Xoá user (Admin)
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
-    }
+//    // Xoá user (Admin)
+//    public void deleteUser(Long id) {
+//        userRepository.deleteById(id);
+//    }
+public void softDeleteUser(Long id) {
+    User user = userRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Không tìm thấy user"));
+    user.setActive(false);
+    userRepository.save(user);
+}
+
 
     // Cấp quyền cho user (Admin)
     public User assignRole(Long userId, String roleName) {
@@ -55,8 +67,19 @@ public class UserService {
     }
 
     // Tìm user theo email (dùng nội bộ)
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElse(null);
+//    public User getUserByEmail(String email) {
+//        return userRepository.findByEmail(email).orElse(null);
+//    }
+    public User findByEmail(String email) {
+        return userRepository.findByEmailAndActiveTrue(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User không tồn tại hoặc đã bị khóa/xóa"));
+    }
+
+
+
+    public long count() {
+        List<User> getActive = userRepository.findByActiveTrue();
+        return getActive.size();
     }
 }
 

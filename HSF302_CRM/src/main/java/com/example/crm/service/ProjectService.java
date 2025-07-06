@@ -86,4 +86,9 @@ public class ProjectService {
         User leader = userRepository.findById(leaderId).orElseThrow();
         return projectRepository.findByLeader(leader);
     }
+
+
+    public long count() {
+        return projectRepository.count();
+    }
 }

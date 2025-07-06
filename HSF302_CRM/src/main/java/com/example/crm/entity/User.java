@@ -37,12 +37,15 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<ProjectMember> projectMembers;
 
+    @Column(nullable = false)
+    private Boolean active = true;
+
     // Getters and Setters
     // ...
 
     public User() {}
 
-    public User( String email, String password, String name, String address, String phone, Role role, List<Project> projectsLed, List<Task> tasksAssigned, List<ProjectMember> projectMembers) {
+    public User( String email, String password, String name, String address, String phone, Role role, List<Project> projectsLed, List<Task> tasksAssigned, List<ProjectMember> projectMembers,  Boolean active) {
 
         this.email = email;
         this.password = password;
@@ -53,6 +56,7 @@ public class User {
         this.projectsLed = projectsLed;
         this.tasksAssigned = tasksAssigned;
         this.projectMembers = projectMembers;
+        this.active = active;
     }
 
     public Long getId() {
@@ -134,4 +138,7 @@ public class User {
     public void setProjectMembers(List<ProjectMember> projectMembers) {
         this.projectMembers = projectMembers;
     }
+
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
 }

@@ -79,4 +79,13 @@ public class TaskService {
         User user = userRepository.findByEmail(email).orElseThrow();
         return taskRepository.findByAssignee(user);
     }
+
+    public long count() {
+        return taskRepository.count();
+    }
+
+    public List<Task> getTasksByAssigneeId(Long assigneeId) {
+        return taskRepository.findByAssigneeId(assigneeId);
+    }
+
 }
