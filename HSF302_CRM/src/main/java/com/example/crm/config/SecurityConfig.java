@@ -33,12 +33,16 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/")
+                        .loginPage("/login")  // <-- Trang login đúng
                         .loginProcessingUrl("/do-login")
                         .successHandler(customAuthenticationSuccessHandler)
                         .permitAll()
                 )
-                .logout(logout -> logout.permitAll());
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll()
+                );
         return http.build();
     }
 
@@ -46,6 +50,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         //return new BCryptPasswordEncoder();
         return NoOpPasswordEncoder.getInstance(); // Không mã hóa, dùng mật khẩu thuần
-
     }
 }
