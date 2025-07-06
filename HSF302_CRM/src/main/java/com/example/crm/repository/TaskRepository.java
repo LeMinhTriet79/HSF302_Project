@@ -16,4 +16,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     List<Task> findByAssigneeEmail(String email);
 
+    List<Task> findByAssigneeId(Long assigneeId);
+
 }

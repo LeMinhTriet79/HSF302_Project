@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class AuthController {
 
-    @GetMapping("/")
+    @GetMapping("/login")
     public String showLoginPage() {
-        return "login";
+        return "/login"; // hoặc "login" nếu file là login.html ở ngoài
     }
 }

@@ -2,6 +2,7 @@ package com.example.crm.service;
 
 import com.example.crm.entity.Role;
 import com.example.crm.repository.RoleRepository;
+import com.example.crm.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,10 @@ import java.util.List;
 public class RoleService {
     @Autowired
     private RoleRepository roleRepository;
-
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private TaskService taskService;
     // Lấy tất cả quyền (dùng cho Admin)
     public List<Role> getAllRoles() {
         return roleRepository.findAll();
@@ -38,5 +42,10 @@ public class RoleService {
     // Tìm quyền theo tên (dùng nội bộ)
     public Role getRoleByName(String name) {
         return roleRepository.findByName(name).orElse(null);
+    }
+
+
+    public long count() {
+        return roleRepository.count();
     }
 }
