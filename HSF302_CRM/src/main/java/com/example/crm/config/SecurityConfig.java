@@ -33,16 +33,12 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")  // <-- Trang login đúng
+                        .loginPage("/")
                         .loginProcessingUrl("/do-login")
                         .successHandler(customAuthenticationSuccessHandler)
                         .permitAll()
                 )
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
-                        .permitAll()
-                );
+                .logout(logout -> logout.permitAll());
         return http.build();
     }
 

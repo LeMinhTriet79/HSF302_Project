@@ -25,7 +25,6 @@ public class UserService {
         return userRepository.findByActiveTrue();
     }
 
-
     // Lấy user theo id
     public User getUserById(Long id) {
         return userRepository.findById(id).orElseThrow();
@@ -37,13 +36,20 @@ public class UserService {
     }
 
     // Sửa thông tin user (Admin, user tự cập nhật tài khoản)
-    public User updateUser(Long id, User userDetails) {
-        User user = userRepository.findById(id).orElseThrow();
-        user.setName(userDetails.getName());
-        user.setEmail(userDetails.getEmail());
-        user.setAddress(userDetails.getAddress());
-        user.setPhone(userDetails.getPhone());
-        return userRepository.save(user);
+    public User updateUser(Long id, User formUser) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy người dùng với ID: " + id));
+
+        if (userRepository.existsByEmailAndIdNot(formUser.getEmail(), id)) {
+            throw new IllegalArgumentException("Email đã được sử dụng bởi người dùng khác.");
+        }
+
+        existingUser.setName(formUser.getName());
+        existingUser.setAddress(formUser.getAddress());
+        existingUser.setPhone(formUser.getPhone());
+        existingUser.setEmail(formUser.getEmail());
+        existingUser.setPassword(formUser.getPassword());
+        return userRepository.save(existingUser);
     }
 
 //    // Xoá user (Admin)

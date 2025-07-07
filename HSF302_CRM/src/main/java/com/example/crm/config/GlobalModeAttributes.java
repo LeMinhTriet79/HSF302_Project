@@ -13,6 +13,7 @@ public class GlobalModeAttributes {
         if (auth != null && auth.isAuthenticated() && auth.getPrincipal() instanceof CustomUserDetails user) {
             model.addAttribute("currentUserName", user.getFullName());
             model.addAttribute("currentUserRole", user.getRole());
+            model.addAttribute("currentUserId", user.getId());
         }
     }
 }
