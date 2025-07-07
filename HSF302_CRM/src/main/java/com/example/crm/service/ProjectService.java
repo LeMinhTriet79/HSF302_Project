@@ -86,4 +86,10 @@ public class ProjectService {
         User leader = userRepository.findById(leaderId).orElseThrow();
         return projectRepository.findByLeader(leader);
     }
+
+
+    // Lấy danh sách dự án của người dùng (có thể là thành viên hoặc leader)
+    public List<Project> getProjectsByUserId(Long userId) {
+        return projectRepository.findProjectsByMemberUserId(userId);
+    }
 }

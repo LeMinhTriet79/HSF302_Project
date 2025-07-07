@@ -5,6 +5,7 @@ import com.example.crm.repository.UserRepository;
 import com.example.crm.security.CustomUserDetails;
 import com.example.crm.service.SecurityService;
 import com.example.crm.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;

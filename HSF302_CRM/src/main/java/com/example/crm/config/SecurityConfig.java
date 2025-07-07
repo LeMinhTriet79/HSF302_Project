@@ -28,8 +28,9 @@ public class SecurityConfig {
                         // Cho phép MEMBER được GET /tasks/**
                         .requestMatchers(HttpMethod.GET, "/tasks/**").hasAnyAuthority("ADMIN", "LEADER", "MEMBER")
                         // Các method còn lại (POST, PUT, DELETE) chỉ ADMIN, LEADER
+                        .requestMatchers("/tasks/update").hasAnyAuthority("MEMBER")
                         .requestMatchers("/tasks/**").hasAnyAuthority("ADMIN", "LEADER")
-                        .requestMatchers("/projects/**", "/projectmembers/**").hasAnyAuthority("ADMIN", "LEADER")
+                        .requestMatchers("/projects/**", "/projectmembers/**").hasAnyAuthority("ADMIN", "LEADER","MEMBER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

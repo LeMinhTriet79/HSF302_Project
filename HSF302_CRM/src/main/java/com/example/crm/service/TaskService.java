@@ -79,4 +79,10 @@ public class TaskService {
         User user = userRepository.findByEmail(email).orElseThrow();
         return taskRepository.findByAssignee(user);
     }
+
+
+    // td
+    public List<Task> getTasksByUserIdAndProjectId(Long projectId, Long userId) {
+        return taskRepository.findByProjectIdAndAssigneeId(projectId, userId);
+    }
 }
