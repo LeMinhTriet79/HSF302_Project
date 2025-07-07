@@ -47,6 +47,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         //return new BCryptPasswordEncoder();
         return NoOpPasswordEncoder.getInstance(); // Không mã hóa, dùng mật khẩu thuần
-
     }
 }

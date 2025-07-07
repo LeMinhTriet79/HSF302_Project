@@ -15,13 +15,16 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <h5>Admin Panel</h5>
-        <a th:href="@{/admin/dashboard}">Dashboard</a>
-        <a href="#">Users</a>
-        <a href="#">Settings</a>
+        <a th:href="@{/admin/dashboard}" >Dashboard</a>
+        <a th:href="@{/users}">Users</a>
+        <a th:href="@{/roles}">Roles</a>
+        <a th:href="@{/projects}">Projects</a>
+        <a th:href="@{/tasks}">Tasks</a>
         <a th:href="@{/profile}" class="active">Profile</a>
         <form th:action="@{/logout}" method="post" class="logout-form">
             <button type="submit" class="logout-btn">Đăng xuất</button>
         </form>
+
     </aside>
 
     <!-- Main content -->

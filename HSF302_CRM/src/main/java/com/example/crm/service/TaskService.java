@@ -80,9 +80,20 @@ public class TaskService {
         return taskRepository.findByAssignee(user);
     }
 
+ // handle-member-role-2
 
     // td
     public List<Task> getTasksByUserIdAndProjectId(Long projectId, Long userId) {
         return taskRepository.findByProjectIdAndAssigneeId(projectId, userId);
     }
+
+    public long count() {
+        return taskRepository.count();
+    }
+
+    public List<Task> getTasksByAssigneeId(Long assigneeId) {
+        return taskRepository.findByAssigneeId(assigneeId);
+    }
+
+
 }

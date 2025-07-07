@@ -1,13 +1,18 @@
 package com.example.crm.controller;
 
+import com.example.crm.entity.Task;
 import com.example.crm.entity.User;
 import com.example.crm.entity.Role;
+import com.example.crm.service.TaskService;
 import com.example.crm.service.UserService;
 import com.example.crm.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/users")
@@ -16,6 +21,8 @@ public class UserViewController {
     private UserService userService;
     @Autowired
     private RoleService roleService;
+@Autowired
+private TaskService taskService;
 
     // Danh sách user
     @GetMapping
@@ -23,6 +30,17 @@ public class UserViewController {
         model.addAttribute("users", userService.getAllUsers());
         return "user/list";
     }
+    @GetMapping("/view/{id}")
+    public String viewUser(@PathVariable Long id, Model model) {
+        User user = userService.getUserById(id);
+        List<Task> tasks = taskService.getTasksByAssigneeId(id);
+
+        model.addAttribute("user", user);
+        model.addAttribute("tasks", tasks);
+        return "admin/view"; // <--- BẮT BUỘC PHẢI NHƯ VẬY!
+    }
+
+
 
     // Form thêm user
     @GetMapping("/create")
@@ -49,8 +67,15 @@ public class UserViewController {
 
     // Xóa user
     @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return "redirect:/users";
+    public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            userService.softDeleteUser(id);
+            redirectAttributes.addFlashAttribute("success", "Đã xóa (ẩn) user thành công!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Không thể xóa user: " + e.getMessage());
+        }
+        return "redirect:/admin/dashboard";
     }
+
+
 }
