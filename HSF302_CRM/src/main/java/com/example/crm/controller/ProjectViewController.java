@@ -2,12 +2,16 @@ package com.example.crm.controller;
 
 import com.example.crm.entity.Project;
 import com.example.crm.entity.User;
+import com.example.crm.security.CustomUserDetails;
 import com.example.crm.service.ProjectService;
 import com.example.crm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/projects")
@@ -53,5 +57,14 @@ public class ProjectViewController {
     public String deleteProject(@PathVariable Long id) {
         projectService.deleteProject(id);
         return "redirect:/projects";
+    }
+
+
+    //dt
+    @GetMapping("/member/viewProjects")
+    public String viewProjectByMemberID(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+        List<Project> projects = projectService.getProjectsByUserId(userDetails.getId());
+        model.addAttribute("projects", projects);
+        return "member/memberProject";
     }
 }
