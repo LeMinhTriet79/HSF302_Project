@@ -14,10 +14,8 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <h5>Member Panel</h5>
-        <a th:href="@{/member/dashboard}" class="active">Dashboard</a>
-        <a th:href="@{/projects/member/viewProjects}">View Projects</a>
-        <a href="#">Users</a>
-        <a href="#">Settings</a>
+        <a th:href="@{/member/dashboard}">Dashboard</a>
+        <a th:href="@{/projects/member/viewProjects}" class="active">View Projects</a>
         <a th:href="@{/profile}">Profile</a>
         <form th:action="@{/logout}" method="post" class="logout-form">
             <button type="submit" class="logout-btn">Đăng xuất</button>
@@ -34,41 +32,40 @@
         </header>
 
         <!-- Scrollable Content -->
-        <table  >
-            <thead>
-            <tr>
-                <th>No.</th>
-                <th>Project Name</th>
-                <th>Description</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Leader Name</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-
-            <tbody>
-
-            <tr th:each="prj : ${projects}" th:if="${prj != null}">
-                <td th:text="${prj.id}"></td>
-                <td th:text="${prj.name}"></td>
-                <td th:text="${prj.description}"></td>
-                <td th:text="${prj.startDate}"></td>
-                <td th:text="${prj.endDate}"></td>
-                <td th:text="${prj.leader.name}"></td>
-                <td><a th:href="@{'/tasks/findByUserId/'+${prj.id}}">View Task</a></td>
-            <!--use project to take task through project id, user id is assignee, it provided through session login-->
-            </tr>
-
-            <tr th:if="${projects == null or projects.isEmpty()}">
-                <td colspan="8" style="text-align: center; color: gray;">Bạn chưa tham gia dự án nào !!!</td>
-
-            </tr>
-
-            </tbody>
-        </table>
-
-
+        <div class="content">
+            <div class="card-wrapper">
+                <div class="table-container">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Project Name</th>
+                            <th>Description</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Leader Name</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="prj : ${projects}" th:if="${prj != null}">
+                            <td th:text="${prj.id}"></td>
+                            <td th:text="${prj.name}"></td>
+                            <td th:text="${prj.description}"></td>
+                            <td th:text="${prj.startDate}"></td>
+                            <td th:text="${prj.endDate}"></td>
+                            <td th:text="${prj.leader.name}"></td>
+                            <td><button class="btn btn-sm btn-primary"><a th:href="@{'/tasks/findByUserId/'+${prj.id}}" style="color: white; text-decoration: none">View Task</a></button></td>
+                        </tr>
+                        <tr th:if="${projects == null or projects.isEmpty()}">
+                            <td colspan="8" style="text-align: center; color: gray;">Bạn chưa tham gia dự án nào !!!
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>
