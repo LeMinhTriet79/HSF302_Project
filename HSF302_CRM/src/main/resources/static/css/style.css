@@ -7,6 +7,12 @@ body {
     background-color: #f1f3f6;
 }
 
+body, html {
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+    height: auto !important;
+}
+
 .layout {
     display: flex;
     height: 100%;
