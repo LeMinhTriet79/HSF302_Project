@@ -34,8 +34,8 @@ public class AuthController {
             String role = userDetails.getRole();
             return switch (role) {
                 case "ADMIN" -> "redirect:/admin/dashboard";
-                case "LEADER" -> "redirect:/leader/dashboard";
-                case "MEMBER" -> "redirect:/member/dashboard";
+                case "LEADER" -> "redirect:/projects";
+                case "MEMBER" -> "redirect:/projects/member/viewProjects";
                 default -> "login";
             };
         }

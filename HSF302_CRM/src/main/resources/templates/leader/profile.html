@@ -15,7 +15,6 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <h5>Leader Panel</h5>
-        <a th:href="@{/leader/dashboard}">Dashboard</a>
         <a th:href="@{/projects}">Quản lý dự án</a>
         <a th:href="@{/projectmembers}">Quản lý thành viên dự án</a>
         <a th:href="@{/users}">Xem danh sách nhân viên</a>
@@ -41,7 +40,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="name" class="form-label">Name</label>
+                                <label for="name" class="form-label">Tên</label>
                                 <input type="text" class="form-control" id="name" name="name"
                                        th:value="${user.name}" required minlength="3" maxlength="50">
                             </div>
@@ -57,7 +56,7 @@
 
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="address" class="form-label">Address</label>
+                                <label for="address" class="form-label">Đia chỉ</label>
                                 <input type="text" class="form-control" id="address" name="address"
                                        th:value="${user.address}" required minlength="5" maxlength="255">
                             </div>
@@ -65,7 +64,7 @@
 
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="phone" class="form-label">Phone</label>
+                                <label for="phone" class="form-label">Số điện thoại</label>
                                 <input type="text" class="form-control" id="phone" name="phone"
                                        th:value="${user.phone}" required pattern="[0-9]{10,15}"
                                        title="Nhập số từ 10–15 chữ số">
@@ -74,14 +73,14 @@
 
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
+                                <label for="password" class="form-label">Mật khẩu</label>
                                 <input type="password" class="form-control" id="password" name="password"
                                        th:value="${user.password}" minlength="6" maxlength="100">
                             </div>
                         </div>
 
                         <div class="col-12 text-end">
-                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                            <button type="submit" class="btn btn-primary">Lưu</button>
                         </div>
                     </div>
                 </form>
