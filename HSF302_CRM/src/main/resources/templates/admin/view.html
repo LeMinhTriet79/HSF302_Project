@@ -14,16 +14,14 @@
         <h5>Admin Panel</h5>
         <a th:href="@{/admin/dashboard}" class="active">Dashboard</a>
         <a th:href="@{/users}">Danh sách người dùng</a>
-        <a th:href="@{/roles}">Roles</a>
-        <a th:href="@{/projects}">Projects</a>
-        <a th:href="@{/tasks}">Task</a>
-        <a th:href="@{/profile}">Profile</a>
+        <a th:href="@{/roles}">Quản lý quyền</a>
+        <a th:href="@{/projects}">Quản lý dự án</a>
+        <a th:href="@{/tasks}">Quản lý công việc</a>
+        <a th:href="@{/profile}">Quản lý tài khoản cá nhân</a>
         <form th:action="@{/logout}" method="post" class="logout-form">
             <button type="submit" class="logout-btn">Đăng xuất</button>
         </form>
-
     </aside>
-
     <!-- Main content -->
     <div class="main">
         <!-- Header -->

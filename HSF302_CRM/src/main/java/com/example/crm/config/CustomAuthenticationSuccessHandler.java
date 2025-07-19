@@ -25,8 +25,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
         String redirectURL = switch (role) {
             case "ADMIN" -> "/admin/dashboard";
-            case "LEADER" -> "/leader/dashboard";
-            case "MEMBER" -> "/member/dashboard";
+            case "LEADER" -> "/projects";
+            case "MEMBER" -> "/projects/member/viewProjects";
             default -> "/";
         };
 

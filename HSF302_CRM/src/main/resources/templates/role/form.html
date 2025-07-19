@@ -13,11 +13,11 @@
   <aside class="sidebar">
     <h5>Admin Panel</h5>
     <a th:href="@{/admin/dashboard}">Dashboard</a>
-    <a th:href="@{/users}">Danh sách người dùng</a>
-    <a th:href="@{/roles}" class="active">Roles</a>
-    <a th:href="@{/projects}">Projects</a>
+    <a th:href="@{/users}" >Danh sách người dùng</a>
+    <a th:href="@{/roles}" class="active">Quản lý quyền</a>
+    <a th:href="@{/projects}">Quản lý dự án</a>
     <a th:href="@{/tasks}">Quản lý công việc</a>
-    <a th:href="@{/profile}">Profile</a>
+    <a th:href="@{/profile}">Quản lý tài khoản cá nhân</a>
     <form th:action="@{/logout}" method="post" class="logout-form">
       <button type="submit" class="logout-btn">Đăng xuất</button>
     </form>

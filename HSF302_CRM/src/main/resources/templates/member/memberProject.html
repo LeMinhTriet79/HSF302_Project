@@ -14,9 +14,8 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <h5>Member Panel</h5>
-        <a th:href="@{/member/dashboard}">Dashboard</a>
-        <a th:href="@{/projects/member/viewProjects}" class="active">View Projects</a>
-        <a th:href="@{/profile}">Profile</a>
+        <a th:href="@{/projects/member/viewProjects}" class="active">Dự án</a>
+        <a th:href="@{/profile}">Quản lý tài khoản cá nhân</a>
         <form th:action="@{/logout}" method="post" class="logout-form">
             <button type="submit" class="logout-btn">Đăng xuất</button>
         </form>
@@ -38,13 +37,13 @@
                     <table class="table table-hover align-middle">
                         <thead>
                         <tr>
-                            <th>No.</th>
-                            <th>Project Name</th>
-                            <th>Description</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th>Leader Name</th>
-                            <th>Action</th>
+                            <th>Id</th>
+                            <th>Tên dự án</th>
+                            <th>Mô tả</th>
+                            <th>Ngày bắt đầu</th>
+                            <th>Ngày kết thúc</th>
+                            <th>Tên leader</th>
+                            <th>Hành động</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -55,7 +54,7 @@
                             <td th:text="${prj.startDate}"></td>
                             <td th:text="${prj.endDate}"></td>
                             <td th:text="${prj.leader.name}"></td>
-                            <td><button class="btn btn-sm btn-primary"><a th:href="@{'/tasks/findByUserId/'+${prj.id}}" style="color: white; text-decoration: none">View Task</a></button></td>
+                            <td><button class="btn btn-sm btn-primary"><a th:href="@{'/tasks/findByUserId/'+${prj.id}}" style="color: white; text-decoration: none">Xem công việc</a></button></td>
                         </tr>
                         <tr th:if="${projects == null or projects.isEmpty()}">
                             <td colspan="8" style="text-align: center; color: gray;">Bạn chưa tham gia dự án nào !!!
