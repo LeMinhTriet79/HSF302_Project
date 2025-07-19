@@ -10,6 +10,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import com.example.crm.security.CustomUserDetails;
 
 import java.util.List;
 
@@ -23,38 +25,71 @@ public class ProjectViewController {
 
     // Danh sách dự án
     @GetMapping
-    public String listProjects(Model model) {
-        model.addAttribute("projects", projectService.getAllProjects());
+    public String listProjects(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        if (userDetails.getRole().equals("LEADER")) {
+            model.addAttribute("projects", projectService.getProjectsByLeader(userDetails.getId()));
+        } else {
+            model.addAttribute("projects", projectService.getAllProjects());
+        }
+        if (userDetails.getRole().equals("ADMIN")) {
+            return "admin/project";
+        }
         return "project/list";
     }
 
     // Form thêm dự án
     @GetMapping("/create")
-    public String showCreateForm(Model model) {
+    public String showCreateForm(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
         model.addAttribute("project", new Project());
-        model.addAttribute("leaders", userService.getAllUsers()); // Bạn lọc leader bên view hoặc service đều được
+        if (userDetails.getRole().equals("LEADER")) {
+            model.addAttribute("leaders", java.util.Collections.singletonList(userService.getUserById(userDetails.getId())));
+        } else {
+            model.addAttribute("leaders", userService.getAllUsers());
+        }
+        if (userDetails.getRole().equals("ADMIN")) {
+            return "admin/project-form";
+        }
         return "project/form";
     }
 
     // Lưu dự án mới/sửa dự án
     @PostMapping("/save")
-    public String saveProject(@ModelAttribute("project") Project project) {
-        // Nếu cần gán leaderId riêng thì xử lý lại ở đây
-        projectService.createProject(project, project.getLeader().getId());
+    public String saveProject(@ModelAttribute("project") Project project, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        if (userDetails.getRole().equals("LEADER")) {
+            // Bắt buộc leader là chính mình
+            projectService.createProject(project, userDetails.getId());
+        } else {
+            projectService.createProject(project, project.getLeader().getId());
+        }
         return "redirect:/projects";
     }
 
     // Form sửa dự án
     @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
-        model.addAttribute("project", projectService.getProjectById(id));
-        model.addAttribute("leaders", userService.getAllUsers());
+    public String showEditForm(@PathVariable Long id, Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Project project = projectService.getProjectById(id);
+        if (userDetails.getRole().equals("LEADER") && !project.getLeader().getId().equals(userDetails.getId())) {
+            return "redirect:/projects";
+        }
+        model.addAttribute("project", project);
+        if (userDetails.getRole().equals("LEADER")) {
+            model.addAttribute("leaders", java.util.Collections.singletonList(userService.getUserById(userDetails.getId())));
+        } else {
+            model.addAttribute("leaders", userService.getAllUsers());
+        }
+        if (userDetails.getRole().equals("ADMIN")) {
+            return "admin/project-form";
+        }
         return "project/form";
     }
 
     // Xóa dự án
     @GetMapping("/delete/{id}")
-    public String deleteProject(@PathVariable Long id) {
+    public String deleteProject(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Project project = projectService.getProjectById(id);
+        if (userDetails.getRole().equals("LEADER") && !project.getLeader().getId().equals(userDetails.getId())) {
+            return "redirect:/projects";
+        }
         projectService.deleteProject(id);
         return "redirect:/projects";
     }

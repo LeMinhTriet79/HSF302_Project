@@ -4,21 +4,60 @@
 <head>
   <title>Thêm/Sửa quyền</title>
   <meta charset="UTF-8">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<div>
-  Xin chào <span sec:authentication="name"></span>
-  <form th:action="@{/logout}" method="post" style="display:inline;">
-    <button type="submit" style="background:none; border:none; color:blue; cursor:pointer; text-decoration:underline; padding:0;">[Đăng xuất]</button>
-  </form>
-  <a th:href="@{/roles}">Quay lại danh sách</a>
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h5>Admin Panel</h5>
+    <a th:href="@{/admin/dashboard}">Dashboard</a>
+    <a th:href="@{/users}">Danh sách người dùng</a>
+    <a th:href="@{/roles}" class="active">Roles</a>
+    <a th:href="@{/projects}">Projects</a>
+    <a th:href="@{/tasks}">Quản lý công việc</a>
+    <a th:href="@{/profile}">Profile</a>
+    <form th:action="@{/logout}" method="post" class="logout-form">
+      <button type="submit" class="logout-btn">Đăng xuất</button>
+    </form>
+  </aside>
+
+  <!-- Main content -->
+  <div class="main">
+    <!-- Header -->
+    <header class="header d-flex flex-row justify-content-between align-items-center">
+      <div class="user-info ">
+        <span th:text="${currentUserName + ' - ' + currentUserRole}">Tên - Vai trò - UserId</span>
+      </div>
+      <div>
+        <a th:href="@{/roles}" class="btn btn-primary">Quay lại danh sách</a>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="card-wrapper">
+
+        <h2 th:text="${role.id == null ? 'Thêm quyền' : 'Sửa quyền'}" class="mb-3"></h2>
+        <form th:action="@{/roles/save}" th:object="${role}" method="post" class="row g-3">
+          <input type="hidden" th:field="*{id}" />
+          <div class="col-md-6">
+            <label class="form-label">Tên quyền</label>
+            <input type="text" th:field="*{name}" class="form-control" required />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Mô tả</label>
+            <input type="text" th:field="*{description}" class="form-control" />
+          </div>
+          <div class="col-12">
+            <button type="submit" sec:authorize="hasAnyAuthority('ADMIN')" class="btn btn-success">
+              Lưu
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
-<h2 th:text="${role.id == null ? 'Thêm quyền' : 'Sửa quyền'}"></h2>
-<form th:action="@{/roles/save}" th:object="${role}" method="post">
-  <input type="hidden" th:field="*{id}" />
-  Tên quyền: <input type="text" th:field="*{name}" required /><br/>
-  Mô tả: <input type="text" th:field="*{description}" /><br/>
-  <button type="submit" sec:authorize="hasAuthority('ADMIN')">Lưu</button>
-</form>
 </body>
 </html>
