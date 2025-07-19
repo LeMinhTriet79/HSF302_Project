@@ -27,6 +27,9 @@ public class ProjectViewController {
         } else {
             model.addAttribute("projects", projectService.getAllProjects());
         }
+        if (userDetails.getRole().equals("ADMIN")) {
+            return "admin/project";
+        }
         return "project/list";
     }
 
@@ -38,6 +41,9 @@ public class ProjectViewController {
             model.addAttribute("leaders", java.util.Collections.singletonList(userService.getUserById(userDetails.getId())));
         } else {
             model.addAttribute("leaders", userService.getAllUsers());
+        }
+        if (userDetails.getRole().equals("ADMIN")) {
+            return "admin/project-form";
         }
         return "project/form";
     }
@@ -66,6 +72,9 @@ public class ProjectViewController {
             model.addAttribute("leaders", java.util.Collections.singletonList(userService.getUserById(userDetails.getId())));
         } else {
             model.addAttribute("leaders", userService.getAllUsers());
+        }
+        if (userDetails.getRole().equals("ADMIN")) {
+            return "admin/project-form";
         }
         return "project/form";
     }

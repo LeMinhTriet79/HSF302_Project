@@ -7,42 +7,61 @@
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <div>
-            Xin chào <span sec:authentication="name"></span>
-            <form th:action="@{/logout}" method="post" style="display:inline;">
-                <button type="submit" class="btn btn-link btn-sm">[Đăng xuất]</button>
-            </form>
-            <a th:href="@{/}" class="btn btn-link btn-sm">Trang chủ</a>
-        </div>
-        <div sec:authorize="hasAnyAuthority('ADMIN','LEADER')">
-            <a th:href="@{/projectmembers/create}" class="btn btn-primary">Thêm thành viên dự án</a>
+<div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h5>Leader Panel</h5>
+        <a th:href="@{/leader/dashboard}">Dashboard</a>
+        <a th:href="@{/projects}">Quản lý dự án</a>
+        <a th:href="@{/projectmembers}" class="active">Quản lý thành viên dự án</a>
+        <a th:href="@{/users}">Xem danh sách nhân viên</a>
+        <a th:href="@{/profile}">Quản lý tài khoản cá nhân</a>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <button type="submit" class="logout-btn">Đăng xuất</button>
+        </form>
+    </aside>
+
+    <!-- Main content -->
+    <div class="main">
+        <!-- Header -->
+        <header class="header d-flex flex-row justify-content-between align-items-center">
+            <div class="user-info ">
+                <span th:text="${currentUserName + ' - ' + currentUserRole}">Tên - Vai trò - UserId</span>
+            </div>
+            <div sec:authorize="hasAnyAuthority('ADMIN','LEADER')">
+                <a th:href="@{/projectmembers/create}" class="btn btn-primary">Thêm thành viên dự án</a>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="card-wrapper">
+                <div class="table-container">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Dự án</th>
+                            <th>Thành viên</th>
+                            <th>Hành động</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="pm : ${projectMembers}">
+                            <td th:text="${pm.id}"></td>
+                            <td th:text="${pm.project.name}"></td>
+                            <td th:text="${pm.user.name}"></td>
+                            <td>
+                                <a th:href="@{|/projectmembers/delete/${pm.id}|}" class="btn btn-danger btn-sm"
+                                   sec:authorize="hasAnyAuthority('ADMIN','LEADER')"
+                                   onclick="return confirm('Xóa khỏi dự án?')">Xóa</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
-    <h2 class="mb-3">Danh sách thành viên dự án</h2>
-    <table class="table table-bordered table-hover">
-        <thead class="table-light">
-            <tr>
-                <th>ID</th>
-                <th>Dự án</th>
-                <th>Thành viên</th>
-                <th>Hành động</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="pm : ${projectMembers}">
-                <td th:text="${pm.id}"></td>
-                <td th:text="${pm.project.name}"></td>
-                <td th:text="${pm.user.name}"></td>
-                <td>
-                    <a th:href="@{|/projectmembers/delete/${pm.id}|}" class="btn btn-danger btn-sm"
-                       sec:authorize="hasAnyAuthority('ADMIN','LEADER')"
-                       onclick="return confirm('Xóa khỏi dự án?')">Xóa</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
 </div>
 </body>
 </html>

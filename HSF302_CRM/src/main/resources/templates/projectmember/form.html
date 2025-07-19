@@ -7,37 +7,58 @@
   <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <div>
-      Xin chào <span sec:authentication="name"></span>
-      <form th:action="@{/logout}" method="post" style="display:inline;">
-        <button type="submit" class="btn btn-link btn-sm">[Đăng xuất]</button>
-      </form>
-      <a th:href="@{/projectmembers}" class="btn btn-link btn-sm">Quay lại danh sách</a>
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h5>Leader Panel</h5>
+    <a th:href="@{/leader/dashboard}">Dashboard</a>
+    <a th:href="@{/projects}">Quản lý dự án</a>
+    <a th:href="@{/projectmembers}" class="active">Quản lý thành viên dự án</a>
+    <a th:href="@{/users}">Xem danh sách nhân viên</a>
+    <a th:href="@{/profile}">Quản lý tài khoản cá nhân</a>
+    <form th:action="@{/logout}" method="post" class="logout-form">
+      <button type="submit" class="logout-btn">Đăng xuất</button>
+    </form>
+  </aside>
+
+  <!-- Main content -->
+  <div class="main">
+    <!-- Header -->
+    <header class="header d-flex flex-row justify-content-between align-items-center">
+      <div class="user-info ">
+        <span th:text="${currentUserName + ' - ' + currentUserRole}">Tên - Vai trò - UserId</span>
+      </div>
+      <div>
+        <a th:href="@{/projectmembers}" class="btn btn-primary">Quay lại danh sách</a>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="card-wrapper">
+        <h2 class="mb-3">Thêm thành viên vào dự án</h2>
+        <form th:action="@{/projectmembers/save}" th:object="${projectMember}" method="post" class="row g-3">
+          <input type="hidden" th:field="*{id}" />
+          <div class="col-md-6">
+            <label class="form-label">Dự án</label>
+            <select th:field="*{project}" class="form-select" required>
+              <option th:each="project : ${projects}" th:value="${project.id}" th:text="${project.name}"
+                      th:selected="${projectMember.project != null and project.id == projectMember.project.id}"></option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Thành viên</label>
+            <select th:field="*{user}" class="form-select" required>
+              <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.name}"
+                      th:selected="${projectMember.user != null and user.id == projectMember.user.id}"></option>
+            </select>
+          </div>
+          <div class="col-12">
+            <button type="submit" sec:authorize="hasAnyAuthority('ADMIN','LEADER')" class="btn btn-success">Lưu</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-  <h2 class="mb-3">Thêm thành viên vào dự án</h2>
-  <form th:action="@{/projectmembers/save}" th:object="${projectMember}" method="post" class="row g-3">
-    <input type="hidden" th:field="*{id}" />
-    <div class="col-md-6">
-      <label class="form-label">Dự án</label>
-      <select th:field="*{project}" class="form-select" required>
-        <option th:each="project : ${projects}" th:value="${project.id}" th:text="${project.name}"
-                th:selected="${projectMember.project != null and project.id == projectMember.project.id}"></option>
-      </select>
-    </div>
-    <div class="col-md-6">
-      <label class="form-label">Thành viên</label>
-      <select th:field="*{user}" class="form-select" required>
-        <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.name}"
-                th:selected="${projectMember.user != null and user.id == projectMember.user.id}"></option>
-      </select>
-    </div>
-    <div class="col-12">
-      <button type="submit" sec:authorize="hasAnyAuthority('ADMIN','LEADER')" class="btn btn-success">Lưu</button>
-    </div>
-  </form>
 </div>
 </body>
 </html>
