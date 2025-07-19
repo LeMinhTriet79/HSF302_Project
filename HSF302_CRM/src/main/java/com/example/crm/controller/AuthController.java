@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +29,16 @@ public class AuthController {
     SecurityService securityService;
 
     @GetMapping("/")
-    public String showLoginPage() {
+    public String showLoginPage(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        if (userDetails != null) {
+            String role = userDetails.getRole();
+            return switch (role) {
+                case "ADMIN" -> "redirect:/admin/dashboard";
+                case "LEADER" -> "redirect:/leader/dashboard";
+                case "MEMBER" -> "redirect:/member/dashboard";
+                default -> "login";
+            };
+        }
         return "login";
     }
 
