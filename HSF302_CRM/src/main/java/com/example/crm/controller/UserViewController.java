@@ -21,8 +21,8 @@ public class UserViewController {
     private UserService userService;
     @Autowired
     private RoleService roleService;
-@Autowired
-private TaskService taskService;
+    @Autowired
+    private TaskService taskService;
 
     // Danh sách user
     @GetMapping
@@ -30,6 +30,7 @@ private TaskService taskService;
         model.addAttribute("users", userService.getAllUsers());
         return "user/list";
     }
+
     @GetMapping("/view/{id}")
     public String viewUser(@PathVariable Long id, Model model) {
         User user = userService.getUserById(id);
@@ -81,8 +82,6 @@ private TaskService taskService;
         }
         return "redirect:/admin/dashboard";
     }
-
-
 
 
 }

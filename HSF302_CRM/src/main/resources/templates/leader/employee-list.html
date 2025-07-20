@@ -24,7 +24,6 @@
         </form>
     </aside>
 
-    <!-- Main content -->
     <div class="main">
         <!-- Header -->
         <header class="header">
@@ -33,63 +32,56 @@
             </div>
         </header>
 
-        <!-- Content -->
         <div class="content">
             <div class="card-wrapper">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Danh sách nhân viên</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped align-middle">
-                                <thead class="table-dark">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Họ tên</th>
-                                    <th>Email</th>
-                                    <th>Số điện thoại</th>
-                                    <th>Địa chỉ</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="user : ${users}">
-                                    <td th:text="${user.id}"></td>
-                                    <td th:text="${user.name}"></td>
-                                    <td th:text="${user.email}"></td>
-                                    <td th:text="${user.phone}"></td>
-                                    <td th:text="${user.address}"></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                <div class="table-container">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Họ tên</th>
+                            <th>Email</th>
+                            <th>Số điện thoại</th>
+                            <th>Địa chỉ</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="user : ${users}">
+                            <td th:text="${user.id}"></td>
+                            <td th:text="${user.name}"></td>
+                            <td th:text="${user.email}"></td>
+                            <td th:text="${user.phone}"></td>
+                            <td th:text="${user.address}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-
-        <!-- Toast Notification (nếu cần) -->
-        <div th:if="${messages}" class="toast-container position-fixed top-0 end-0 p-3">
-            <div id="liveToast" th:class="'toast text-bg-' + ${type}" role="alert" aria-live="assertive"
-                 aria-atomic="true" data-bs-delay="5000">
-                <div class="d-flex">
-                    <div class="toast-body" th:text="${messages}"></div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                            data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Bootstrap JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
-                crossorigin="anonymous"></script>
-        <script th:if="${messages}">
-            const toastLive = document.getElementById('liveToast');
-            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
-            toastBootstrap.show();
-        </script>
     </div>
+
+    <!-- Toast Notification (nếu cần) -->
+    <div th:if="${messages}" class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="liveToast" th:class="'toast text-bg-' + ${type}" role="alert" aria-live="assertive"
+             aria-atomic="true" data-bs-delay="5000">
+            <div class="d-flex">
+                <div class="toast-body" th:text="${messages}"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                        data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+            crossorigin="anonymous"></script>
+    <script th:if="${messages}">
+        const toastLive = document.getElementById('liveToast');
+        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
+        toastBootstrap.show();
+    </script>
+</div>
 </div>
 </body>
 </html>
