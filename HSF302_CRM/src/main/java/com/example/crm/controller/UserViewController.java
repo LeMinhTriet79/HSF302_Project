@@ -40,7 +40,12 @@ private TaskService taskService;
         return "admin/view"; // <--- BẮT BUỘC PHẢI NHƯ VẬY!
     }
 
-
+    // Danh sách nhân viên cho leader
+    @GetMapping("/employees")
+    public String listEmployees(Model model) {
+        model.addAttribute("users", userService.getAllEmployees());
+        return "leader/employee-list";
+    }
 
     // Form thêm user
     @GetMapping("/create")
@@ -76,6 +81,8 @@ private TaskService taskService;
         }
         return "redirect:/admin/dashboard";
     }
+
+
 
 
 }

@@ -87,5 +87,10 @@ public void softDeleteUser(Long id) {
         List<User> getActive = userRepository.findByActiveTrue();
         return getActive.size();
     }
+
+    // Lấy tất cả nhân viên (chỉ role MEMBER)
+    public List<User> getAllEmployees() {
+        return userRepository.findByRole_NameAndActiveTrue("MEMBER");
+    }
 }
 

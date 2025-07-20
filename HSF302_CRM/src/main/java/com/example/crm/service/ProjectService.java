@@ -6,6 +6,7 @@ import com.example.crm.entity.User;
 import com.example.crm.repository.ProjectMemberRepository;
 import com.example.crm.repository.ProjectRepository;
 import com.example.crm.repository.UserRepository;
+import com.example.crm.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,8 @@ public class ProjectService {
     private UserRepository userRepository;
     @Autowired
     private ProjectMemberRepository projectMemberRepository;
+    @Autowired
+    private TaskRepository taskRepository;
 
     // Lấy tất cả dự án (Admin)
     public List<Project> getAllProjects() {
@@ -49,6 +52,11 @@ public class ProjectService {
 
     // Xoá dự án (Leader)
     public void deleteProject(Long id) {
+        Project project = projectRepository.findById(id).orElseThrow();
+        // Xóa tất cả task thuộc project này trước
+        taskRepository.deleteAll(taskRepository.findByProject(project));
+        // Xóa tất cả project member thuộc project này trước
+        projectMemberRepository.deleteAll(projectMemberRepository.findByProject(project));
         projectRepository.deleteById(id);
     }
 
