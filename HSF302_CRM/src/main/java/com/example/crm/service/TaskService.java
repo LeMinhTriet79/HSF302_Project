@@ -17,6 +17,8 @@ public class TaskService {
     private UserRepository userRepository;
     @Autowired
     private TaskStatusRepository taskStatusRepository;
+    @Autowired
+    private ProjectMemberRepository projectMemberRepository;
 
     // Lấy tất cả công việc (Admin hoặc Leader)
     public List<Task> getAllTasks() {
@@ -41,14 +43,35 @@ public class TaskService {
     }
 
     // Tạo mới công việc (Leader)
+//    public Task createTask(Task task, Long projectId, Long assigneeId, Long statusId) {
+//        Project project = projectRepository.findById(projectId).orElseThrow();
+//        User assignee = userRepository.findById(assigneeId).orElseThrow();
+//        TaskStatus status = taskStatusRepository.findById(statusId).orElseThrow();
+//        task.setProject(project);
+//        task.setAssignee(assignee);
+//        task.setStatus(status);
+//        return taskRepository.save(task);
+//    }
     public Task createTask(Task task, Long projectId, Long assigneeId, Long statusId) {
         Project project = projectRepository.findById(projectId).orElseThrow();
         User assignee = userRepository.findById(assigneeId).orElseThrow();
         TaskStatus status = taskStatusRepository.findById(statusId).orElseThrow();
+
         task.setProject(project);
         task.setAssignee(assignee);
         task.setStatus(status);
-        return taskRepository.save(task);
+        Task savedTask = taskRepository.save(task);
+
+        // Kiểm tra xem assignee đã là thành viên của project chưa
+        boolean isAlreadyMember = projectMemberRepository.existsByProjectAndUser(project, assignee);
+        if (!isAlreadyMember) {
+            ProjectMember pm = new ProjectMember();
+            pm.setProject(project);
+            pm.setUser(assignee);
+            projectMemberRepository.save(pm);
+        }
+
+        return savedTask;
     }
 
     // Sửa thông tin công việc (Leader)
@@ -95,5 +118,9 @@ public class TaskService {
         return taskRepository.findByAssigneeId(assigneeId);
     }
 
+
+    public TaskStatistics getStatisticsForUser(Long userId) {
+        return taskRepository.getTaskStatisticsByUserId(userId);
+    }
 
 }

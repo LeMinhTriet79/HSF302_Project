@@ -55,14 +55,30 @@ public class ProjectViewController {
     // Lưu dự án mới/sửa dự án
     @PostMapping("/save")
     public String saveProject(@ModelAttribute("project") Project project, @AuthenticationPrincipal CustomUserDetails userDetails) {
-        if (userDetails.getRole().equals("LEADER")) {
-            // Bắt buộc leader là chính mình
-            projectService.createProject(project, userDetails.getId());
+        if (project.getId() == null) {
+            // Tạo mới
+            if (userDetails.getRole().equals("LEADER")) {
+                projectService.createProject(project, userDetails.getId());
+            } else {
+                projectService.createProject(project, project.getLeader().getId());
+            }
         } else {
-            projectService.createProject(project, project.getLeader().getId());
+            // Cập nhật
+            projectService.updateProject(project.getId(), project);
         }
+
         return "redirect:/projects";
     }
+//    @PostMapping("/save")
+//    public String saveProject(@ModelAttribute("project") Project project, @AuthenticationPrincipal CustomUserDetails userDetails) {
+//        if (userDetails.getRole().equals("LEADER")) {
+//            // Bắt buộc leader là chính mình
+//            projectService.createProject(project, userDetails.getId());
+//        } else {
+//            projectService.createProject(project, project.getLeader().getId());
+//        }
+//        return "redirect:/projects";
+//    }
 
     // Form sửa dự án
     @GetMapping("/edit/{id}")

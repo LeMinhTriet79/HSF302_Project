@@ -37,8 +37,22 @@ public class ProjectService {
     public Project createProject(Project project, Long leaderId) {
         User leader = userRepository.findById(leaderId).orElseThrow();
         project.setLeader(leader);
-        return projectRepository.save(project);
+
+        Project savedProject = projectRepository.save(project);
+
+        // Tự động thêm leader vào bảng project_members
+        ProjectMember projectMember = new ProjectMember();
+        projectMember.setProject(savedProject);
+        projectMember.setUser(leader);
+        projectMemberRepository.save(projectMember);
+
+        return savedProject;
     }
+//    public Project createProject(Project project, Long leaderId) {
+//        User leader = userRepository.findById(leaderId).orElseThrow();
+//        project.setLeader(leader);
+//        return projectRepository.save(project);
+//    }
 
     // Sửa dự án (Leader)
     public Project updateProject(Long id, Project projectDetails) {
