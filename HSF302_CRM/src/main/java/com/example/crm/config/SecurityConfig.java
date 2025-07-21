@@ -25,6 +25,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/", "/login", "/css/**", "/static/css/js/**", "/example.html").permitAll()
                         .requestMatchers("/users/employees").hasAuthority("LEADER")
+                        .requestMatchers("/users/member/statistics").hasAuthority("MEMBER")
                         .requestMatchers("/roles/**", "/users/**", "/taskstatus/**").hasAuthority("ADMIN")
                         // Cho phép MEMBER được GET /tasks/**
                         .requestMatchers(HttpMethod.GET, "/tasks/**").hasAnyAuthority("ADMIN", "LEADER", "MEMBER")

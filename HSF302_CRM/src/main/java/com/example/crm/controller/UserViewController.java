@@ -3,10 +3,13 @@ package com.example.crm.controller;
 import com.example.crm.entity.Task;
 import com.example.crm.entity.User;
 import com.example.crm.entity.Role;
+import com.example.crm.security.CustomUserDetails;
 import com.example.crm.service.TaskService;
+import com.example.crm.service.TaskStatistics;
 import com.example.crm.service.UserService;
 import com.example.crm.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -83,5 +86,12 @@ public class UserViewController {
         return "redirect:/admin/dashboard";
     }
 
+    @GetMapping("/member/statistics")
+    public String viewPersonalTaskStatistics(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+        System.out.println("User role: " + userDetails.getAuthorities());
+        TaskStatistics stats = taskService.getStatisticsForUser(userDetails.getId());
+        model.addAttribute("stats", stats);
+        return "member/taskStatistics";
+    }
 
 }

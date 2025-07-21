@@ -16,4 +16,7 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Lo
 
     // Xóa thành viên khỏi dự án (tìm 1 record theo project và user)
     void deleteByProjectAndUser(Project project, User user);
+
+    boolean existsByProjectAndUser(Project project, User user);
+
 }
